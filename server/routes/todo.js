@@ -33,4 +33,36 @@ router.post("/new-todo", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const todo = await Todo.findById(req.params.id).populate("project");
+    res.send(todo);
+  } catch (error) {
+    res.send(error.message);
+  }
+});
+
+router.post("/delete-todo/:id", async (req, res) => {
+  try {
+    await Todo.deleteOne({ _id: req.params.id });
+    res.send({ message: "Deleted successfully" });
+  } catch (error) {
+    res.send(error.message);
+  }
+});
+
+router.post("/edit-todo/:id", async (req, res) => {
+  try {
+    const { title, description, dueDate, priority, complete, project } =
+      req.body;
+    await Todo.updateOne(
+      { _id: req.params.id },
+      { $set: { title, description, dueDate, priority, complete, project } }
+    );
+    res.send({ message: "Updated successfully" });
+  } catch (error) {
+    res.send(error.message);
+  }
+});
+
 module.exports = router;
