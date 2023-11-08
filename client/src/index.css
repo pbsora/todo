@@ -2,3 +2,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .icon {
+    @apply flex justify-center duration-200 cursor-pointer hover:scale-125 place-items-center;
+  }
+  .sidebar-tooltip {
+    @apply absolute w-auto p-2 m-2 text-xl font-bold text-white transition-all duration-100 origin-left scale-0 bg-gray-900 rounded-md shadow-md min-w-max left-16;
+  }
+}
