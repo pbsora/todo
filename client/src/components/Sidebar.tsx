@@ -1,11 +1,15 @@
-import { AiFillGithub, AiFillProject } from "react-icons/ai";
+import { AiFillGithub, AiFillProject, AiFillPlusSquare } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
 import { FaTasks } from "react-icons/fa";
 import { GiPlagueDoctorProfile } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Outlet } from "react-router-dom";
+import TodoModal from "./Todo/TodoModal";
+import { useState } from "react";
 
 const Sidebar = () => {
+  const [modal, setModal] = useState(false);
+
   return (
     <>
       <main className="flex">
@@ -33,6 +37,12 @@ const Sidebar = () => {
                 Projects
               </span>
             </div>
+            <div className="icon group" onClick={() => setModal(true)}>
+              <AiFillPlusSquare />
+              <span className="sidebar-tooltip group-hover:scale-100">
+                New Todo
+              </span>
+            </div>
           </div>
           <div
             id="side-bottom"
@@ -51,6 +61,7 @@ const Sidebar = () => {
           </div>
         </div>
         <Outlet />
+        {modal && <TodoModal setModal={setModal} />}
       </main>
     </>
   );

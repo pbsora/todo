@@ -7,3 +7,8 @@ export type Todo = {
   complete: boolean;
   project: string;
 };
+
+export type Project = {
+  _id: string;
+  name: string;
+};
