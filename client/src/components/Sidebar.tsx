@@ -1,7 +1,6 @@
 import { AiFillGithub, AiFillProject, AiFillPlusSquare } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
 import { FaTasks } from "react-icons/fa";
-import { GiPlagueDoctorProfile } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Outlet } from "react-router-dom";
 import TodoModal from "./Todo/TodoModal";
@@ -48,10 +47,6 @@ const Sidebar = () => {
             id="side-bottom"
             className="flex flex-col items-center gap-8 mb-12 text-4xl"
           >
-            <div className="icon group">
-              <GiPlagueDoctorProfile />
-              <span className="sidebar-tooltip group-hover:scale-100">You</span>
-            </div>
             <div className="icon group">
               <BiLogOutCircle />
               <span className="sidebar-tooltip group-hover:scale-100">

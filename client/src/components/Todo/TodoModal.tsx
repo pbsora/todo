@@ -13,9 +13,10 @@ const TodoModal = ({ setModal }: Props) => {
   const [todo, setTodo] = useState({
     title: "",
     description: "",
-    dueDate: "",
-    project: "Select a project",
+    project: "",
+    priority: "",
   });
+  const [dueDate, setDueDate] = useState<string>("");
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -24,7 +25,10 @@ const TodoModal = ({ setModal }: Props) => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-    console.log(todo.dueDate);
+  };
+
+  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
+    setDueDate(e.target.value);
   };
 
   useEffect(() => {
@@ -37,15 +41,30 @@ const TodoModal = ({ setModal }: Props) => {
     getProjects();
   }, []);
 
-  /* const handleNewTodo = (e:FormEvent<HTMLFormElement>) => {
+  const handleNewTodo = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { data } = await axios({
+      method: "post",
+      url: "todo/new-todo",
+      data: {
+        title: todo.title,
+        description: todo.description,
+        dueDate: dueDate,
+        priority: todo.priority,
+        project: todo.project,
+      },
+      withCredentials: true,
+    });
+    console.log(data);
+  };
 
-  }
- */
+  console.log(todo);
+
   return (
     <div className=" absolute top-0 left-0 flex items-center justify-center w-screen h-screen animate-fade animate-duration-[600ms] animate-delay-100 animate-ease-in-out animate-normal bg-black bg-opacity-80 z-50">
       <div
         id="modal"
-        className="border-2 border-white relative w-[95vw] h-[90vh] lg:w-2/4 bg-zinc-800 opacity-100 md:h-3/4 animate-jump-in animate-duration-[600ms] animate-delay-100 animate-ease-in-out rounded-xl"
+        className="border-2 border-white relative w-[95vw] h-fit lg:w-2/4 bg-zinc-800 opacity-100 pb-6 animate-jump-in animate-duration-[600ms] animate-delay-100 animate-ease-in-out rounded-xl"
       >
         <div
           className="absolute text-3xl cursor-pointer top-3 right-3"
@@ -53,7 +72,7 @@ const TodoModal = ({ setModal }: Props) => {
         >
           <AiOutlineClose />
         </div>
-        <form action="#" className="px-5 pt-5 ">
+        <form action="#" className="px-5 pt-5 " onSubmit={handleNewTodo}>
           <div className="mt-3">
             <label htmlFor="title" className="block mb-2 text-2xl">
               Title
@@ -87,8 +106,8 @@ const TodoModal = ({ setModal }: Props) => {
               type="date"
               name="dueDate"
               className="w-full p-3 rounded-lg bg-zinc-900"
-              onChange={handleChange}
-              value={todo.dueDate}
+              onChange={handleDate}
+              value={dueDate}
             />
           </div>
           <div className="mt-3 ">
@@ -99,12 +118,30 @@ const TodoModal = ({ setModal }: Props) => {
               name="project"
               className="w-full p-3 rounded bg-zinc-900 "
               onChange={handleChange}
-              value={todo.project}
             >
+              <option value="">Select an option</option>
               {projects &&
                 projects.map((project) => (
-                  <option value={project._id}>{project.name}</option>
+                  <option value={project._id} key={project._id}>
+                    {project.name}
+                  </option>
                 ))}
+            </select>
+          </div>
+          <div className="mt-3 ">
+            <label htmlFor="title" className="block mb-2 text-2xl">
+              Priority
+            </label>
+            <select
+              name="priority"
+              className="w-full p-3 rounded bg-zinc-900 "
+              onChange={handleChange}
+              value={todo.priority}
+            >
+              <option value="">Select an option</option>
+              <option value="1">Not urgent</option>
+              <option value="2">Semi-urgent</option>
+              <option value="3">Urgent</option>
             </select>
           </div>
           <div className="flex justify-center w-full mt-10">

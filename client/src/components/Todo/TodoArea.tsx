@@ -19,11 +19,10 @@ const TodoArea = () => {
     };
     getTodos();
   }, []);
-  console.log(allTodos);
 
   return (
     <>
-      <div className="p-4 text-3xl">
+      <div className="p-4 text-3xl ">
         <RxHamburgerMenu />
       </div>
       <div className="flex flex-wrap justify-center gap-6 px-2 py-5 text-white md:px-10 lg:justify-start ">
