@@ -64,11 +64,10 @@ router.post("/delete-todo/:id", async (req, res) => {
 
 router.post("/edit-todo/:id", async (req, res) => {
   try {
-    const { title, description, dueDate, priority, complete, project } =
-      req.body;
+    const { title, description, dueDate, priority, project } = req.body;
     await Todo.updateOne(
       { _id: req.params.id },
-      { $set: { title, description, dueDate, priority, complete, project } }
+      { $set: { title, description, dueDate, priority, project } }
     );
     res.send({ message: "Updated successfully" });
   } catch (error) {

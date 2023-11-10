@@ -106,7 +106,7 @@ const TodoItem = ({ todo }: Props) => {
         </div>
       </div>
 
-      {modal && <TodoModal todo={todo} setModal={setModal} />}
+      {modal && <TodoModal task={todo} setModal={setModal} />}
     </>
   );
 };

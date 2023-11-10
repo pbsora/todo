@@ -8,9 +8,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("tailwindcss-animated"),
-    require("daisyui"),
-  ],
+  plugins: [require("@tailwindcss/forms"), require("tailwindcss-animated")],
 };

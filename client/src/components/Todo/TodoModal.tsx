@@ -4,19 +4,19 @@ import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
 
 type Props = {
-  todo?: Todo;
+  task?: Todo;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const TodoModal = ({ setModal }: Props) => {
+const TodoModal = ({ task, setModal }: Props) => {
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [todo, setTodo] = useState({
-    title: "",
-    description: "",
-    project: "",
-    priority: "",
+    title: task?.title || "",
+    description: task?.description || "",
+    project: task?.project || "",
+    priority: task?.priority || "",
   });
-  const [dueDate, setDueDate] = useState<string>("");
+  const [dueDate, setDueDate] = useState<string>(task?.dueDate || "");
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -58,10 +58,25 @@ const TodoModal = ({ setModal }: Props) => {
     console.log(data);
   };
 
-  console.log(todo);
+  const handleEditTodo = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { data } = await axios({
+      method: "post",
+      url: `todo/edit-todo/${task?._id}`,
+      data: {
+        title: todo.title,
+        description: todo.description,
+        dueDate: dueDate,
+        priority: todo.priority,
+        project: todo.project,
+      },
+      withCredentials: true,
+    });
+    console.log(data);
+  };
 
   return (
-    <div className=" absolute top-0 left-0 flex items-center justify-center w-screen h-screen animate-fade animate-duration-[600ms] animate-delay-100 animate-ease-in-out animate-normal bg-black bg-opacity-80 z-50">
+    <div className="text-white absolute top-0 left-0 flex items-center justify-center w-screen h-screen animate-fade animate-duration-[600ms] animate-delay-100 animate-ease-in-out animate-normal bg-black bg-opacity-80 z-50">
       <div
         id="modal"
         className="border-2 border-white relative w-[95vw] h-fit lg:w-2/4 bg-zinc-800 opacity-100 pb-6 animate-jump-in animate-duration-[600ms] animate-delay-100 animate-ease-in-out rounded-xl"
@@ -72,7 +87,11 @@ const TodoModal = ({ setModal }: Props) => {
         >
           <AiOutlineClose />
         </div>
-        <form action="#" className="px-5 pt-5 " onSubmit={handleNewTodo}>
+        <form
+          action="#"
+          className="px-5 pt-5 "
+          onSubmit={task !== undefined ? handleEditTodo : handleNewTodo}
+        >
           <div className="mt-3">
             <label htmlFor="title" className="block mb-2 text-2xl">
               Title
